@@ -170,6 +170,52 @@
       pointer-events:none;
     }
 
+    /* ===== NEW: Burger menu on scroll ===== */
+    .nav-inner{ position:relative; } /* needed for dropdown positioning */
+
+    .burger{
+      display:none;
+      border:1px solid var(--border);
+      background:#fff;
+      padding:10px 12px;
+      border-radius:12px;
+      font-weight:900;
+      font-size:18px;
+      cursor:pointer;
+      line-height:1;
+    }
+
+    .burger-menu{
+      display:none;
+      position:absolute;
+      top:74px;
+      right:18px;
+      width:240px;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:14px;
+      box-shadow: 0 16px 34px rgba(15,23,42,.12);
+      overflow:hidden;
+      z-index:2000;
+    }
+    .burger-menu a{
+      display:block;
+      padding:12px 14px;
+      font-size:13px;
+      color:var(--text);
+      border-bottom:1px solid var(--border);
+    }
+    .burger-menu a:last-child{border-bottom:none;}
+    .burger-menu a:hover{background:#f8fafc;}
+    .burger-menu.open{display:block;}
+
+    /* when scrolled: hide links, show burger */
+    .nav.scrolled .links{display:none;}
+    .nav.scrolled .burger{display:inline-flex;}
+
+    /* RTL dropdown position */
+    body.rtl .burger-menu{ right:auto; left:18px; }
+
     /* HERO */
     .hero{
       margin-top: 18px;
@@ -474,6 +520,9 @@
           <a href="#contact" data-i18n="navContact">Contact</a>
         </div>
 
+        <!-- NEW: Burger button (shows only when scrolling) -->
+        <button class="burger" id="burgerBtn" type="button" aria-label="Menu" aria-expanded="false">☰</button>
+
         <div class="lang-wrap">
           <select id="langSelect" aria-label="Language">
             <option value="en">English</option>
@@ -482,6 +531,15 @@
             <option value="ku-ar">کوردی بادینی</option>
           </select>
         </div>
+      </div>
+
+      <!-- NEW: Burger dropdown -->
+      <div class="burger-menu" id="burgerMenu" aria-hidden="true">
+        <a href="#top" data-i18n="navHome">Home</a>
+        <a href="#divisions" data-i18n="navDivisions">Divisions</a>
+        <a href="#cv" data-i18n="navCV">CV</a>
+        <a href="#about" data-i18n="navAbout">About Us</a>
+        <a href="#contact" data-i18n="navContact">Contact</a>
       </div>
     </div>
   </div>
@@ -526,16 +584,24 @@
 
       <div class="grid">
         <article class="card">
-          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200&auto=format&fit=crop');"></div>
+          <div class="thumb" style="background-image:url('generaltrading.png');"></div>
           <div class="body">
             <div class="tag"><span class="icon">🏗</span><span data-i18n="divTrading">General Trading</span></div>
             <p data-i18n="divTradingDesc">Sourcing and supplying products worldwide with quality control.</p>
             <a class="more" href="#contact" data-i18n="divMore">View More →</a>
           </div>
         </article>
+        <article class="card">
+          <div class="thumb" style="background-image:url('medical.png');"></div>
+          <div class="body">
+            <div class="tag"><span class="icon">🩺</span><span data-i18n="divMedical">Medical Supplies</span></div>
+            <p data-i18n="divMedicalDesc">Reliable supply of medical products and consumables.</p>
+            <a class="more" href="#contact" data-i18n="divMore">View More →</a>
+          </div>
+        </article>
 
         <article class="card">
-          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop');"></div>
+          <div class="thumb" style="background-image:url('IT.jpg');"></div>
           <div class="body">
             <div class="tag"><span class="icon">💻</span><span data-i18n="divIT">IT (Software)</span></div>
             <p data-i18n="divITDesc">Websites, applications, systems, and ongoing support.</p>
@@ -544,7 +610,7 @@
         </article>
 
         <article class="card">
-          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1581579185169-7bdb0b0d0b8d?q=80&w=1200&auto=format&fit=crop');"></div>
+          <div class="thumb" style="background-image:url('cleaninig.png');"></div>
           <div class="body">
             <div class="tag"><span class="icon">🧼</span><span data-i18n="divCleaning">Cleaning Services</span></div>
             <p data-i18n="divCleaningDesc">Professional cleaning for homes, offices, and facilities.</p>
@@ -561,14 +627,7 @@
           </div>
         </article>
 
-        <article class="card">
-          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1582719478171-2ff0abfd2b85?q=80&w=1200&auto=format&fit=crop');"></div>
-          <div class="body">
-            <div class="tag"><span class="icon">🩺</span><span data-i18n="divMedical">Medical Supplies</span></div>
-            <p data-i18n="divMedicalDesc">Reliable supply of medical products and consumables.</p>
-            <a class="more" href="#contact" data-i18n="divMore">View More →</a>
-          </div>
-        </article>
+
 
         <article class="card">
           <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1200&auto=format&fit=crop');"></div>
@@ -719,11 +778,11 @@
       en: {
         dir:"ltr", rtl:false,
         brandTitle:"Parzand Company",
-        brandSubtitle:"General Trading • IT (Software) • Cleaning • Food • Medical Supplies • Real Estate",
+        brandSubtitle:"General Trading • Medical Supplies • IT (Software) • Cleaning • Food •  Real Estate",
         navHome:"Home", navDivisions:"Divisions", navCV:"CV", navAbout:"About Us", navContact:"Contact",
 
         heroPill:"Empowering growth",
-        heroTitle:"Empowering Growth and Innovation",
+        heroTitle:"Groing More and Innovation",
         heroDesc:"Parzand Company is a diversified company offering services across multiple sectors with high standards and reliable delivery.",
         heroCta:"Explore Our Divisions",
         heroCta2:"Get in Touch",
@@ -829,7 +888,7 @@
         cvLead:"معلومات المؤسس والمدير التنفيذي.",
         cvFounderLine:"مؤسس شركة برزند",
         cvFounderName:"SARDAR QURBANI BRAIM",
-        cvCeoLine:"المدير التنفيذي",
+        cvCeoLine:"المدير المفوض (CEO)",
         cvCeoName:"ياسا سردار قرباني",
         cvDownload:"تحميل السيرة",
         cvCta:"تواصل للأعمال",
@@ -863,16 +922,16 @@
       ckb: {
         dir:"rtl", rtl:true,
         brandTitle:"کۆمپانیای پەرزەند",
-        brandSubtitle:"بازرگانی گشتی • ئای تی • پاککردنەوە • خواردن • پێداویستی پزیشکی • موڵک",
+        brandSubtitle:"بازرگانی گشتی • ئای تی • پاککردنەوە • خواردن • پێداویستی پزیشکی • خانووبەرە",
         navHome:"سەرەتا", navDivisions:"بەشەکان", navCV:"سیڤی", navAbout:"دەربارە", navContact:"پەیوەندی",
 
         heroPill:"پەرەپێدانی گەشە",
-        heroTitle:"پەرەپێدانی گەشە و نوێکاری",
+        heroTitle:"زیاتر گەشەکردن و نوێکاری",
         heroDesc:"کۆمپانیای پەرزەند کۆمپانیایەکی فرەبواریە و خزمەتگوزاری لە چەند بواری جیاواز پێشکەش دەکات.",
         heroCta:"بینینی بەشەکان",
         heroCta2:"پەیوەندی بکە",
         heroCardTitle:"چی دەکەین",
-        heroCardDesc:"بازرگانی، پەرەپێدانی سۆفتوێر، پاککردنەوە، خواردن، و پێداویستی پزیشکی.",
+        heroCardDesc:"بازرگانی گشتی ، پێداویستی پزیشکی , پەرەپێدانی سۆفتوێر، پاککردنەوە، خواردن ",
 
         founderName:"SARDAR QURBANI BRAIM",
         founderTitle:"خاوەن",
@@ -881,17 +940,17 @@
         divisionsDesc:"بواری جیاواز ببینە کە کۆمپانیای پەرزەند تێدا سەرکەوتووە.",
         divTrading:"بازرگانی گشتی",
         divTradingDesc:"دابینکردن و ناردنی بەرهەم بە چاودێری کوالێتی.",
-        divIT:"ئای تی (سۆفتوێر)",
-        divITDesc:"وێبسایت، ئەپ، سیستەم و پشتگیری.",
+        divIT:"تەکنەلۆژیاى زانیارى (سۆفتوێر)",
+        divITDesc:"پەرەپێدانی وێبسایت، ئەپ، سیستەم و پشتگیری",
         divCleaning:"خزمەتگوزاری پاککردنەوە",
-        divCleaningDesc:"پاککردنەوەی پڕۆفەشنال بۆ ماڵ و نووسینگە.",
+        divCleaningDesc:"پاککردنەوەی پڕۆفیشنال بۆ ماڵ و نووسینگە.",
         divFood:"خزمەتگوزاری خواردن",
-        divFoodDesc:"بەرھەمی خواردن بە ستانداردی باش.",
+        divFoodDesc:"خزمەتگوزاری ئامادەکردنی خواردن بە ستانداردی بەرز.",
         divMedical:"پێداویستی پزیشکی",
         divMedicalDesc:"دابینکردنی پێداویستی پزیشکی و کاڵای پزیشکی.",
-        divReal:"موڵک",
+        divReal:"خزمەتگوزاری خانووبەرە",
         divRealDesc:"بەردەست نییە",
-        divMore:"زیاتر ببینە →",
+        divMore:"لەم کاتەدا بەردەست نییە →",
 
         ctaStripTitle:"ئامادەیت هاوبەشی پڕۆژەکەت بین؟",
         ctaStripDesc:"داواکاری بنێرە و زوو وەڵامت دەدەین.",
@@ -905,12 +964,12 @@
         cvCeoName:"Yasa Sardar Qurbani",
         cvDownload:"داگرتنی سیڤی",
         cvCta:"پەیوەندی بۆ کار",
-        cvWorkBig:"ئێمە کار لەسەر وێبسایتەکە دەکەین و بە زووترین کات باشتر دەکەین.",
+        cvWorkBig:"ئێمە خەریکی کارکردنین لەسەر ماڵپەڕەکە و زووترین کاتدا باشتری دەکەین.",
         cvWorkSmall:"سوپاس بۆ ئارامگرتنتان.",
         cvCompanyTitle:"کۆمپانیای پەرزەند",
         cvCompanyDesc:"خزمەتگوزاری فرەبواری پێشکەش دەکەین: بازرگانی گشتی، ئای تی (پەرەپێدانی سۆفتوێر)، پاککردنەوە، خواردن، و پێداویستی پزیشکی.",
         cvField1:"خزمەتگوزاری:",
-        cvField1v:"بازرگانی • ئای تی • پاککردنەوە • خواردن • پزیشکی",
+        cvField1v:"بازرگانی گشتی • ئای تی • پاککردنەوە • خواردن • پێداویستی پزیشکی",
         cvField3:"شوێن:",
         cvField3v:"هەولێر، هەرێمی کوردستان، عێراق",
 
@@ -927,7 +986,6 @@
         footerQuick:"لینکی خێرا",
         footerDivisions:"بەشەکان",
         footerContact:"پەیوەندی",
-        footerEmail:"info@parzand.com",
         footerAddr:"هەولێر، هەرێمی کوردستان، عێراق",
         footerCopyright:"© 2026 کۆمپانیای پەرزەند | هەموو مافەکان پارێزراون"
       },
@@ -1063,6 +1121,49 @@ ${message}`;
 
       statusEl.textContent = "Opening WhatsApp...";
       window.open(url, "_blank", "noopener");
+    });
+
+    /* ===== NEW: Scroll -> burger behavior + toggle menu ===== */
+    const nav = document.querySelector(".nav");
+    const burgerBtn = document.getElementById("burgerBtn");
+    const burgerMenu = document.getElementById("burgerMenu");
+
+    function setNavState(){
+      const scrolled = window.scrollY > 80; // change 80 if you want
+      nav.classList.toggle("scrolled", scrolled);
+
+      if (!scrolled) {
+        burgerMenu.classList.remove("open");
+        burgerBtn.setAttribute("aria-expanded", "false");
+        burgerMenu.setAttribute("aria-hidden", "true");
+      }
+    }
+
+    setNavState();
+    window.addEventListener("scroll", setNavState);
+
+    burgerBtn.addEventListener("click", () => {
+      const isOpen = burgerMenu.classList.toggle("open");
+      burgerBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      burgerMenu.setAttribute("aria-hidden", isOpen ? "false" : "true");
+    });
+
+    // close menu when clicking a link
+    burgerMenu.querySelectorAll("a").forEach(a => {
+      a.addEventListener("click", () => {
+        burgerMenu.classList.remove("open");
+        burgerBtn.setAttribute("aria-expanded", "false");
+        burgerMenu.setAttribute("aria-hidden", "true");
+      });
+    });
+
+    // close menu if click outside
+    document.addEventListener("click", (e) => {
+      if (!burgerMenu.contains(e.target) && !burgerBtn.contains(e.target)) {
+        burgerMenu.classList.remove("open");
+        burgerBtn.setAttribute("aria-expanded", "false");
+        burgerMenu.setAttribute("aria-hidden", "true");
+      }
     });
   </script>
 </body>
