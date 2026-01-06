@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parzand Company</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f5f7fb;
+      --surface:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:#e2e8f0;
+
+      --brand:#4f46e5;
+      --brand2:#7c3aed;
+
+      --shadow: 0 12px 30px rgba(15,23,42,.12);
+      --radius: 18px;
+      --max: 1120px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    body.rtl{
+      font-family: "Noto Kufi Arabic", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{width:min(100%, var(--max)); margin:0 auto; padding:0 18px;}
+    .row{display:flex; align-items:center; justify-content:space-between; gap:14px;}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 14px; border-radius:999px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* ---------- Global background decoration ---------- */
+    .bg-wrap{
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+      background:
+        radial-gradient(700px 400px at 10% 0%, rgba(79,70,229,.12), transparent 60%),
+        radial-gradient(650px 380px at 90% 10%, rgba(124,58,237,.10), transparent 60%),
+        radial-gradient(700px 420px at 50% 90%, rgba(79,70,229,.08), transparent 60%),
+        linear-gradient(180deg, #f7f8ff, #f5f7fb 30%, #f5f7fb 70%, #f7f8ff);
+    }
+    .blob{
+      position:absolute;
+      width: 520px;
+      height: 520px;
+      border-radius: 999px;
+      filter: blur(30px);
+      opacity: .45;
+      background: radial-gradient(circle at 30% 30%, rgba(79,70,229,.35), transparent 55%);
+      top: -220px;
+      left: -220px;
+      transform: rotate(12deg);
+    }
+    .blob.b2{
+      width: 560px;
+      height: 560px;
+      background: radial-gradient(circle at 30% 30%, rgba(124,58,237,.30), transparent 55%);
+      top: -160px;
+      right: -240px;
+      left: auto;
+      transform: rotate(-8deg);
+    }
+    .gridlines{
+      position:absolute;
+      inset:-40px;
+      background-image:
+        linear-gradient(to right, rgba(15,23,42,.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(15,23,42,.05) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(circle at 50% 20%, rgba(0,0,0,.55), transparent 60%);
+      opacity: .35;
+    }
+
+    /* NAV */
+    .nav{
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top:0;
+      z-index: 1000;
+    }
+    .nav-inner{padding:12px 0;}
+
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      min-width: 190px;
+    }
+
+    /* Logo container (put logo.png in same folder) */
+    .logo{
+      width:64px; height:64px; border-radius:10px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.6);
+    }
+    .logo img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display:block;
+    }
+
+    .brand b{font-size:14px}
+    .brand small{display:block; margin-top:1px; color:var(--muted); font-size:12px}
+
+    .links{
+      display:flex; gap:10px; flex-wrap:wrap;
+      justify-content:center;
+    }
+    .links a{
+      font-size:13px;
+      padding:10px 12px;
+      border-radius:999px;
+      color:var(--muted);
+      border:1px solid transparent;
+      transition:.2s ease;
+      white-space:nowrap;
+    }
+    .links a:hover{
+      color:var(--text);
+      background:#fff;
+      border-color:var(--border);
+    }
+
+    .lang-wrap{position:relative}
+    select{
+      border:1px solid var(--border);
+      background:#fff;
+      padding:10px 38px 10px 12px;
+      border-radius:12px;
+      font-weight:600;
+      font-size:12px;
+      color:var(--text);
+      outline:none;
+      cursor:pointer;
+    }
+    .lang-wrap:after{
+      content:"▾";
+      position:absolute;
+      right:12px; top:50%;
+      transform:translateY(-50%);
+      color:var(--muted);
+      pointer-events:none;
+    }
+
+    /* HERO */
+    .hero{
+      margin-top: 18px;
+      border-radius: 22px;
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      background: #0b1220;
+      position:relative;
+      min-height: 420px;
+    }
+    .hero::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(90deg, rgba(15,23,42,.82) 0%, rgba(15,23,42,.42) 60%, rgba(15,23,42,.10) 100%),
+        url("https://images.unsplash.com/photo-1470214304380-aadaedcfff8b?q=80&w=1800&auto=format&fit=crop") center/cover no-repeat;
+      transform: scale(1.02);
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(700px 420px at 15% 10%, rgba(79,70,229,.32), transparent 60%),
+        radial-gradient(650px 420px at 85% 25%, rgba(124,58,237,.28), transparent 60%);
+      mix-blend-mode: screen;
+      opacity: .65;
+    }
+    .hero-inner{
+      position:relative;
+      padding: 64px 28px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 20px;
+      align-items: end;
+      z-index: 1;
+    }
+    .hero h1{
+      font-size: clamp(30px, 4.2vw, 54px);
+      line-height:1.05;
+      color:#fff;
+      letter-spacing:.2px;
+      margin-bottom: 14px;
+    }
+    .hero p{
+      color: rgba(255,255,255,.82);
+      max-width: 62ch;
+      margin-bottom: 18px;
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-weight: 700;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
+      color:#fff;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .btn.primary{
+      border:none;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      box-shadow: 0 16px 30px rgba(124,58,237,.20);
+    }
+    .btn:hover{transform: translateY(-2px);}
+
+    .hero-card{
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 18px;
+      padding: 18px;
+      color:#fff;
+      align-self: stretch;
+      backdrop-filter: blur(10px);
+    }
+    .hero-card h3{font-size:16px;margin-bottom:8px}
+    .hero-card p{margin:0;color:rgba(255,255,255,.80)}
+    .hero-card .founder{
+      margin-top:10px;
+      opacity:.95;
+    }
+
+    /* SECTIONS */
+    .section{ margin-top: 26px; }
+    .section h2{ font-size: 22px; margin-bottom: 8px; }
+    .section p.lead{
+      color: var(--muted);
+      max-width: 75ch;
+      margin-bottom: 16px;
+    }
+
+    /* CARDS GRID */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .card{
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 10px 24px rgba(15,23,42,.06);
+      overflow:hidden;
+      transition:.2s ease;
+    }
+    .card:hover{transform: translateY(-4px); box-shadow: 0 16px 34px rgba(15,23,42,.10)}
+    .card .thumb{
+      height: 120px;
+      background: #eef2ff;
+      border-bottom: 1px solid var(--border);
+      background-size: cover;
+      background-position:center;
+    }
+    .card .body{padding: 14px}
+    .tag{
+      display:flex; align-items:center; gap:8px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .icon{
+      width:26px;height:26px;border-radius:10px;
+      background: rgba(79,70,229,.12);
+      display:flex;align-items:center;justify-content:center;
+      color: var(--brand);
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+    .card p{color:var(--muted); font-size: 13px; margin-bottom: 10px}
+    .card a.more{
+      display:inline-flex; align-items:center; gap:8px;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--brand);
+      padding: 8px 0;
+    }
+
+    /* CTA STRIP */
+    .cta-strip{
+      margin-top: 18px;
+      background: linear-gradient(135deg, rgba(79,70,229,.10), rgba(124,58,237,.10));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .cta-strip h3{font-size:16px}
+    .cta-strip .btn{
+      color: #fff;
+      border: none;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+    }
+
+    /* CONTACT */
+    .contact-card{ padding:16px; }
+    .field-label{ font-size:12px; color:var(--muted); }
+    .field{
+      width:100%;
+      margin-top:6px;
+      padding:12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      outline:none;
+      font: inherit;
+      background:#fff;
+      color: var(--text);
+    }
+    textarea.field{ min-height:120px; resize: vertical; }
+    .status{
+      margin-top:10px;
+      font-size:13px;
+      color: var(--muted);
+    }
+
+    /* CV */
+    .cv-wrap{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    .cv-card{ padding: 16px; }
+    .cv-block{
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(79,70,229,.06), rgba(124,58,237,.06));
+      margin-top: 12px;
+    }
+    .cv-block .big{
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: .2px;
+    }
+    .cv-block .small{
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .cv-actions{ margin-top: 12px; display:flex; gap: 10px; flex-wrap: wrap; }
+    .btn.light{
+      background:#fff;
+      color: var(--text);
+      border:1px solid var(--border);
+      box-shadow: 0 10px 20px rgba(15,23,42,.06);
+    }
+
+    /* FOOTER */
+    footer{
+      margin-top: 26px;
+      background: #0b1220;
+      color: rgba(255,255,255,.86);
+      padding: 26px 0;
+    }
+    .footer-grid{
+      display:grid;
+      grid-template-columns: 1.2fr 1fr 1fr 1fr;
+      gap: 14px;
+    }
+    footer h4{font-size:14px;margin-bottom:10px}
+    footer a, footer p{color: rgba(255,255,255,.72); font-size: 13px}
+    .foot-brand{display:flex; align-items:center; gap:10px; margin-bottom:10px}
+    .foot-logo{
+      width:32px;height:32px;border-radius:10px;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border: 1px solid rgba(255,255,255,.35);
+    }
+    .foot-logo img{width:100%;height:100%;object-fit:cover;display:block;}
+    .copyright{
+      margin-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 14px;
+      color: rgba(255,255,255,.55);
+      font-size: 12px;
+      text-align:center;
+    }
+
+    /* RTL */
+    body.rtl .row{flex-direction: row-reverse;}
+    body.rtl .links{justify-content:center}
+    body.rtl .hero-inner{direction: rtl;}
+    body.rtl .cta-strip{flex-direction: row-reverse;}
+    body.rtl .tag{flex-direction: row-reverse;}
+    body.rtl .footer-grid{direction: rtl;}
+    body.rtl .foot-brand{flex-direction: row-reverse;}
+    body.rtl .cv-wrap{direction: rtl;}
+    body.rtl .cv-actions{justify-content:flex-start;}
+    body.rtl .lang-wrap:after{right:auto; left:12px;}
+
+    /* Responsive */
+    @media (max-width: 1020px){
+      .grid{grid-template-columns: repeat(2, 1fr);}
+      .hero-inner{grid-template-columns: 1fr;}
+      .cta-strip{flex-direction: column; align-items:flex-start;}
+      body.rtl .cta-strip{align-items:flex-start;}
+      .footer-grid{grid-template-columns: 1fr 1fr;}
+      .cv-wrap{grid-template-columns: 1fr;}
+    }
+    @media (max-width: 560px){
+      .grid{grid-template-columns: 1fr;}
+      .links{justify-content:flex-start}
+      .footer-grid{grid-template-columns: 1fr;}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Background decoration -->
+  <div class="bg-wrap" aria-hidden="true">
+    <div class="blob"></div>
+    <div class="blob b2"></div>
+    <div class="gridlines"></div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav">
+    <div class="container nav-inner">
+      <div class="row">
+        <a class="brand" href="#top">
+          <span class="logo" aria-hidden="true">
+            <img src="logo.png" alt="Parzand Logo" onerror="this.style.display='none'">
+          </span>
+          <span>
+            <b data-i18n="brandTitle">Parzand Company</b>
+            <small data-i18n="brandSubtitle">General Trading • IT (Software) • Cleaning • Food • Medical Supplies • Real Estate</small>
+          </span>
+        </a>
+
+        <div class="links" aria-label="Primary">
+          <a href="#top" data-i18n="navHome">Home</a>
+          <a href="#divisions" data-i18n="navDivisions">Divisions</a>
+          <a href="#cv" data-i18n="navCV">CV</a>
+          <a href="#about" data-i18n="navAbout">About Us</a>
+          <a href="#contact" data-i18n="navContact">Contact</a>
+        </div>
+
+        <div class="lang-wrap">
+          <select id="langSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="ar">عربی</option>
+            <option value="ckb">کوردی سۆرانی</option>
+            <option value="ku-ar">کوردی بادینی</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header id="top" class="container">
+    <div class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="pill" style="border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.10); color: rgba(255,255,255,.90);" data-i18n="heroPill">
+            Empowering growth
+          </div>
+          <h1 data-i18n="heroTitle">Empowering Growth and Innovation</h1>
+          <p data-i18n="heroDesc">
+            Parzand Company is a diversified company offering services across multiple sectors with high standards and reliable delivery.
+          </p>
+          <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <a class="btn primary" href="#divisions" data-i18n="heroCta">Explore Our Divisions</a>
+            <a class="btn" href="#contact" data-i18n="heroCta2">Get in Touch</a>
+          </div>
+        </div>
+
+        <div class="hero-card" id="about">
+          <h3 data-i18n="heroCardTitle">What we do</h3>
+          <p data-i18n="heroCardDesc">Trading, software development, cleaning, food services, and medical supplies.</p>
+          <p class="founder">
+            <strong data-i18n="founderName">SARDAR QURBANI BRAIM</strong>
+            <span style="display:block; margin-top:4px" data-i18n="founderTitle">Founder</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- DIVISIONS -->
+    <section id="divisions" class="section">
+      <h2 data-i18n="divisionsTitle">Our Divisions</h2>
+      <p class="lead" data-i18n="divisionsDesc">
+        Explore the different areas where Parzand Company excels, providing top-notch services and solutions.
+      </p>
+
+      <div class="grid">
+        <article class="card">
+          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200&auto=format&fit=crop');"></div>
+          <div class="body">
+            <div class="tag"><span class="icon">🏗</span><span data-i18n="divTrading">General Trading</span></div>
+            <p data-i18n="divTradingDesc">Sourcing and supplying products worldwide with quality control.</p>
+            <a class="more" href="#contact" data-i18n="divMore">View More →</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop');"></div>
+          <div class="body">
+            <div class="tag"><span class="icon">💻</span><span data-i18n="divIT">IT (Software)</span></div>
+            <p data-i18n="divITDesc">Websites, applications, systems, and ongoing support.</p>
+            <a class="more" href="#contact" data-i18n="divMore">View More →</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1581579185169-7bdb0b0d0b8d?q=80&w=1200&auto=format&fit=crop');"></div>
+          <div class="body">
+            <div class="tag"><span class="icon">🧼</span><span data-i18n="divCleaning">Cleaning Services</span></div>
+            <p data-i18n="divCleaningDesc">Professional cleaning for homes, offices, and facilities.</p>
+            <a class="more" href="#contact" data-i18n="divMore">View More →</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1543353071-10c8ba85a904?q=80&w=1200&auto=format&fit=crop');"></div>
+          <div class="body">
+            <div class="tag"><span class="icon">🍽</span><span data-i18n="divFood">Food Services</span></div>
+            <p data-i18n="divFoodDesc">Quality food products with strong standards for safety and taste.</p>
+            <a class="more" href="#contact" data-i18n="divMore">View More →</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1582719478171-2ff0abfd2b85?q=80&w=1200&auto=format&fit=crop');"></div>
+          <div class="body">
+            <div class="tag"><span class="icon">🩺</span><span data-i18n="divMedical">Medical Supplies</span></div>
+            <p data-i18n="divMedicalDesc">Reliable supply of medical products and consumables.</p>
+            <a class="more" href="#contact" data-i18n="divMore">View More →</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1200&auto=format&fit=crop');"></div>
+          <div class="body">
+            <div class="tag"><span class="icon">🏠</span><span data-i18n="divReal">Real Estate</span></div>
+            <p data-i18n="divRealDesc">Not available now.</p>
+            <a class="more" href="#contact" data-i18n="divMore">View More →</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="cta-strip">
+        <div>
+          <h3 data-i18n="ctaStripTitle">Ready to partner with us for your next project?</h3>
+          <p style="color:var(--muted); font-size:13px; margin-top:4px;" data-i18n="ctaStripDesc">
+            Tell us what you need — we’ll respond quickly.
+          </p>
+        </div>
+        <a class="btn" href="#contact" data-i18n="ctaStripBtn">Get In Touch</a>
+      </div>
+    </section>
+
+    <!-- CV -->
+    <section id="cv" class="section" style="margin-top:22px;">
+      <h2 data-i18n="cvTitle">Company Profile</h2>
+      <p class="lead" data-i18n="cvLead">Founder and CEO information.</p>
+
+      <div class="cv-wrap">
+        <div class="card cv-card">
+          <div style="display:grid; gap:10px;">
+            <div>
+              <div style="font-weight:900; font-size:14px; color:var(--muted);" data-i18n="cvFounderLine">Founder of Parzand Company</div>
+              <div style="font-weight:900; font-size:18px;" data-i18n="cvFounderName">SARDAR QURBANI BRAIM</div>
+            </div>
+
+            <div>
+              <div style="font-weight:900; font-size:14px; color:var(--muted);" data-i18n="cvCeoLine">CEO</div>
+              <div style="font-weight:900; font-size:18px;" data-i18n="cvCeoName">Yasa Sardar Qurbani</div>
+            </div>
+          </div>
+
+          <div class="cv-actions">
+            <a class="btn light" href="your-cv-file.pdf" download data-i18n="cvDownload">Download CV</a>
+            <a class="btn primary" href="#contact" data-i18n="cvCta">Contact for Business</a>
+          </div>
+
+          <div class="cv-block">
+            <div class="big" data-i18n="cvWorkBig">We are working on the website and we will make it better as soon as possible.</div>
+            <div class="small" data-i18n="cvWorkSmall">Thank you for your patience.</div>
+          </div>
+        </div>
+
+        <div class="card cv-card">
+          <div style="font-weight:900; font-size:16px;" data-i18n="cvCompanyTitle">Parzand Company</div>
+          <p style="margin-top:8px; color:var(--muted); font-size:13px;" data-i18n="cvCompanyDesc">
+            We provide diversified services: general trading, IT (software development), cleaning service, food service, and medical supplies.
+          </p>
+          <div style="margin-top:12px; display:grid; gap:8px; font-size:13px; color:var(--muted);">
+            <div><strong style="color:var(--text)" data-i18n="cvField1">Services:</strong> <span data-i18n="cvField1v">Trading • IT • Cleaning • Food • Medical</span></div>
+            <div><strong style="color:var(--text)" data-i18n="cvField3">Location:</strong> <span data-i18n="cvField3v">Erbil, Kurdistan Region, Iraq</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section" style="margin-top:22px;">
+      <h2 data-i18n="contactTitle">Contact Us</h2>
+      <p class="lead" data-i18n="contactDesc">Send us your request and we’ll reply with details and pricing.</p>
+
+      <div class="card contact-card">
+        <form id="contactForm">
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+            <div>
+              <label class="field-label" data-i18n="formNameLabel">Your Name</label>
+              <input class="field" name="name" data-i18n-placeholder="formNameLabel" placeholder="Your Name" required />
+            </div>
+            <div>
+              <label class="field-label" data-i18n="formContactLabel">Phone or Email</label>
+              <input class="field" name="contact" type="text" data-i18n-placeholder="formContactPlaceholder" placeholder="Phone or Email" required />
+            </div>
+          </div>
+
+          <div style="margin-top:12px;">
+            <label class="field-label" data-i18n="formMsgLabel">Your Message</label>
+            <textarea class="field" name="message" data-i18n-placeholder="formMsgLabel" placeholder="Your Message" required></textarea>
+          </div>
+
+          <button class="btn primary" style="margin-top:12px;" type="submit" data-i18n="formSend">Send Message</button>
+          <div class="status" id="formStatus"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="foot-brand">
+            <div class="foot-logo" aria-hidden="true">
+              <img src="logo.png" alt="Parzand Logo" onerror="this.style.display='none'">
+            </div>
+            <div>
+              <div style="font-weight:800" data-i18n="brandTitle">Parzand Company</div>
+              <div style="color:rgba(255,255,255,.62); font-size:12px" data-i18n="footerTag">Diversified services, high standards.</div>
+            </div>
+          </div>
+          <p data-i18n="footerTextShort">We work in general trading, IT (software development), cleaning service, food service, and medical supplies.</p>
+        </div>
+
+        <div>
+          <h4 data-i18n="footerQuick">Quick Links</h4>
+          <p><a href="#top" data-i18n="navHome">Home</a></p>
+          <p><a href="#divisions" data-i18n="navDivisions">Divisions</a></p>
+          <p><a href="#cv" data-i18n="navCV">CV</a></p>
+          <p><a href="#about" data-i18n="navAbout">About Us</a></p>
+          <p><a href="#contact" data-i18n="navContact">Contact</a></p>
+        </div>
+
+        <div>
+          <h4 data-i18n="footerDivisions">Divisions</h4>
+          <p><a href="#divisions" data-i18n="divTrading">General Trading</a></p>
+          <p><a href="#divisions" data-i18n="divIT">IT (Software)</a></p>
+          <p><a href="#divisions" data-i18n="divCleaning">Cleaning Services</a></p>
+          <p><a href="#divisions" data-i18n="divFood">Food Services</a></p>
+          <p><a href="#divisions" data-i18n="divMedical">Medical Supplies</a></p>
+          <p><a href="#divisions" data-i18n="divReal">Real Estate</a></p>
+        </div>
+
+        <div>
+          <h4 data-i18n="footerContact">Contact</h4>
+          <p>📞 <a href="tel:+9647704601060">+9647704601060</a></p>
+          <p>💬 <a href="https://wa.me/9647704601060" target="_blank" rel="noopener">WhatsApp</a></p>
+          <p>✈️ <a href="tg://resolve?phone=9647704601060">Telegram</a></p>
+          <p>✉️ <span data-i18n="footerEmail">info@parzand.com</span></p>
+          <p>📍 <span data-i18n="footerAddr">Erbil, Kurdistan Region, Iraq</span></p>
+        </div>
+      </div>
+
+      <div class="copyright" data-i18n="footerCopyright">© 2026 Parzand Company | All Rights Reserved</div>
+    </div>
+  </footer>
+
+  <script>
+    const translations = {
+      en: {
+        dir:"ltr", rtl:false,
+        brandTitle:"Parzand Company",
+        brandSubtitle:"General Trading • IT (Software) • Cleaning • Food • Medical Supplies • Real Estate",
+        navHome:"Home", navDivisions:"Divisions", navCV:"CV", navAbout:"About Us", navContact:"Contact",
+
+        heroPill:"Empowering growth",
+        heroTitle:"Empowering Growth and Innovation",
+        heroDesc:"Parzand Company is a diversified company offering services across multiple sectors with high standards and reliable delivery.",
+        heroCta:"Explore Our Divisions",
+        heroCta2:"Get in Touch",
+        heroCardTitle:"What we do",
+        heroCardDesc:"Trading, software development, cleaning, food services, and medical supplies.",
+
+        founderName:"SARDAR QURBANI BRAIM",
+        founderTitle:"Founder",
+
+        divisionsTitle:"Our Divisions",
+        divisionsDesc:"Explore the different areas where Parzand Company excels, providing top-notch services and solutions.",
+        divTrading:"General Trading",
+        divTradingDesc:"Sourcing and supplying products worldwide with quality control.",
+        divIT:"IT (Software)",
+        divITDesc:"Websites, applications, systems, and ongoing support.",
+        divCleaning:"Cleaning Services",
+        divCleaningDesc:"Professional cleaning for homes, offices, and facilities.",
+        divFood:"Food Services",
+        divFoodDesc:"Quality food products with strong standards for safety and taste.",
+        divMedical:"Medical Supplies",
+        divMedicalDesc:"Reliable supply of medical products and consumables.",
+        divReal:"Real Estate",
+        divRealDesc:"Not available now.",
+        divMore:"View More →",
+
+        ctaStripTitle:"Ready to partner with us for your next project?",
+        ctaStripDesc:"Tell us what you need — we’ll respond quickly.",
+        ctaStripBtn:"Get In Touch",
+
+        cvTitle:"Company Profile",
+        cvLead:"Founder and CEO information.",
+        cvFounderLine:"Founder of Parzand Company",
+        cvFounderName:"SARDAR QURBANI BRAIM",
+        cvCeoLine:"CEO",
+        cvCeoName:"Yasa Sardar Qurbani",
+        cvDownload:"Download CV",
+        cvCta:"Contact for Business",
+        cvWorkBig:"We are working on the website and we will make it better as soon as possible.",
+        cvWorkSmall:"Thank you for your patience.",
+        cvCompanyTitle:"Parzand Company",
+        cvCompanyDesc:"We provide diversified services: general trading, IT (software development), cleaning service, food service, and medical supplies.",
+        cvField1:"Services:",
+        cvField1v:"Trading • IT • Cleaning • Food • Medical",
+        cvField3:"Location:",
+        cvField3v:"Erbil, Kurdistan Region, Iraq",
+
+        contactTitle:"Contact Us",
+        contactDesc:"Send us your request and we’ll reply with details and pricing.",
+        formNameLabel:"Your Name",
+        formContactLabel:"Phone or Email",
+        formContactPlaceholder:"Phone or Email",
+        formMsgLabel:"Your Message",
+        formSend:"Send Message",
+
+        footerTag:"Diversified services, high standards.",
+        footerTextShort:"We work in general trading, IT (software development), cleaning service, food service, and medical supplies.",
+        footerQuick:"Quick Links",
+        footerDivisions:"Divisions",
+        footerContact:"Contact",
+        footerEmail:"info@parzand.com",
+        footerAddr:"Erbil, Kurdistan Region, Iraq",
+        footerCopyright:"© 2026 Parzand Company | All Rights Reserved"
+      },
+
+      ar: {
+        dir:"rtl", rtl:true,
+        brandTitle:"شركة برزند",
+        brandSubtitle:"التجارة العامة • تقنية المعلومات • التنظيف • الأغذية • المستلزمات الطبية • العقارات",
+        navHome:"الرئيسية", navDivisions:"الأقسام", navCV:"السيرة", navAbout:"من نحن", navContact:"اتصل بنا",
+
+        heroPill:"تمكين النمو",
+        heroTitle:"تمكين النمو والابتكار",
+        heroDesc:"شركة برزند شركة متنوعة تقدم خدمات عبر عدة قطاعات بمعايير عالية وتسليم موثوق.",
+        heroCta:"استكشف أقسامنا",
+        heroCta2:"تواصل معنا",
+        heroCardTitle:"ماذا نقدم",
+        heroCardDesc:"التجارة، تطوير البرمجيات، التنظيف، خدمات الأغذية، والمستلزمات الطبية.",
+
+        founderName:"SARDAR QURBANI BRAIM",
+        founderTitle:"رأیس",
+
+        divisionsTitle:"أقسامنا",
+        divisionsDesc:"استكشف المجالات التي تتميز بها شركة برزند، مع خدمات وحلول عالية الجودة.",
+        divTrading:"التجارة العامة",
+        divTradingDesc:"توريد وتوفير المنتجات حول العالم مع مراقبة الجودة.",
+        divIT:"تقنية المعلومات (برمجيات)",
+        divITDesc:"مواقع وتطبيقات وأنظمة ودعم مستمر.",
+        divCleaning:"خدمات التنظيف",
+        divCleaningDesc:"تنظيف احترافي للمنازل والمكاتب والمرافق.",
+        divFood:"خدمات الأغذية",
+        divFoodDesc:"منتجات غذائية بمعايير قوية للسلامة والطعم.",
+        divMedical:"المستلزمات الطبية",
+        divMedicalDesc:"توريد موثوق للمنتجات الطبية والمستهلكات.",
+        divReal:"العقارات",
+        divRealDesc:"غير متاح الآن.",
+        divMore:"عرض المزيد →",
+
+        ctaStripTitle:"جاهز للتعاون معنا في مشروعك القادم؟",
+        ctaStripDesc:"أرسل طلبك وسنرد عليك بسرعة.",
+        ctaStripBtn:"تواصل معنا",
+
+        cvTitle:"نبذة الشركة",
+        cvLead:"معلومات المؤسس والمدير التنفيذي.",
+        cvFounderLine:"مؤسس شركة برزند",
+        cvFounderName:"SARDAR QURBANI BRAIM",
+        cvCeoLine:"المدير التنفيذي",
+        cvCeoName:"ياسا سردار قرباني",
+        cvDownload:"تحميل السيرة",
+        cvCta:"تواصل للأعمال",
+        cvWorkBig:"نحن نعمل على الموقع وسنجعله أفضل في أقرب وقت ممكن.",
+        cvWorkSmall:"شكراً لصبركم.",
+        cvCompanyTitle:"شركة برزند",
+        cvCompanyDesc:"نقدم خدمات متنوعة: التجارة العامة، تقنية المعلومات (تطوير برمجيات)، التنظيف، خدمات الأغذية، والمستلزمات الطبية.",
+        cvField1:"الخدمات:",
+        cvField1v:"تجارة • تقنية • تنظيف • أغذية • طبي",
+        cvField3:"الموقع:",
+        cvField3v:"أربيل، إقليم كردستان، العراق",
+
+        contactTitle:"اتصل بنا",
+        contactDesc:"أرسل طلبك وسنرد عليك بالتفاصيل والأسعار.",
+        formNameLabel:"الاسم",
+        formContactLabel:"رقم الهاتف أو البريد الإلكتروني",
+        formContactPlaceholder:"رقم الهاتف أو البريد الإلكتروني",
+        formMsgLabel:"الرسالة",
+        formSend:"إرسال",
+
+        footerTag:"خدمات متنوعة بمعايير عالية.",
+        footerTextShort:"نعمل في التجارة العامة وتقنية المعلومات والتنظيف وخدمات الأغذية والمستلزمات الطبية.",
+        footerQuick:"روابط سريعة",
+        footerDivisions:"الأقسام",
+        footerContact:"التواصل",
+        footerEmail:"info@parzand.com",
+        footerAddr:"أربيل، إقليم كردستان، العراق",
+        footerCopyright:"© 2026 شركة برزند | جميع الحقوق محفوظة"
+      },
+
+      ckb: {
+        dir:"rtl", rtl:true,
+        brandTitle:"کۆمپانیای پەرزەند",
+        brandSubtitle:"بازرگانی گشتی • ئای تی • پاککردنەوە • خواردن • پێداویستی پزیشکی • موڵک",
+        navHome:"سەرەتا", navDivisions:"بەشەکان", navCV:"سیڤی", navAbout:"دەربارە", navContact:"پەیوەندی",
+
+        heroPill:"پەرەپێدانی گەشە",
+        heroTitle:"پەرەپێدانی گەشە و نوێکاری",
+        heroDesc:"کۆمپانیای پەرزەند کۆمپانیایەکی فرەبواریە و خزمەتگوزاری لە چەند بواری جیاواز پێشکەش دەکات.",
+        heroCta:"بینینی بەشەکان",
+        heroCta2:"پەیوەندی بکە",
+        heroCardTitle:"چی دەکەین",
+        heroCardDesc:"بازرگانی، پەرەپێدانی سۆفتوێر، پاککردنەوە، خواردن، و پێداویستی پزیشکی.",
+
+        founderName:"SARDAR QURBANI BRAIM",
+        founderTitle:"خاوەن",
+
+        divisionsTitle:"بەشەکانمان",
+        divisionsDesc:"بواری جیاواز ببینە کە کۆمپانیای پەرزەند تێدا سەرکەوتووە.",
+        divTrading:"بازرگانی گشتی",
+        divTradingDesc:"دابینکردن و ناردنی بەرهەم بە چاودێری کوالێتی.",
+        divIT:"ئای تی (سۆفتوێر)",
+        divITDesc:"وێبسایت، ئەپ، سیستەم و پشتگیری.",
+        divCleaning:"خزمەتگوزاری پاککردنەوە",
+        divCleaningDesc:"پاککردنەوەی پڕۆفەشنال بۆ ماڵ و نووسینگە.",
+        divFood:"خزمەتگوزاری خواردن",
+        divFoodDesc:"بەرھەمی خواردن بە ستانداردی باش.",
+        divMedical:"پێداویستی پزیشکی",
+        divMedicalDesc:"دابینکردنی پێداویستی پزیشکی و کاڵای پزیشکی.",
+        divReal:"موڵک",
+        divRealDesc:"بەردەست نییە",
+        divMore:"زیاتر ببینە →",
+
+        ctaStripTitle:"ئامادەیت هاوبەشی پڕۆژەکەت بین؟",
+        ctaStripDesc:"داواکاری بنێرە و زوو وەڵامت دەدەین.",
+        ctaStripBtn:"پەیوەندی بکە",
+
+        cvTitle:"پێناسەی کۆمپانیا",
+        cvLead:"زانیاری خاوەن و بەڕێوەبەر.",
+        cvFounderLine:"دامەزرێنەری کۆمپانیای پەرزەند",
+        cvFounderName:"SARDAR QURBANI BRAIM",
+        cvCeoLine:"بەڕێوەبەری گشتی (CEO)",
+        cvCeoName:"Yasa Sardar Qurbani",
+        cvDownload:"داگرتنی سیڤی",
+        cvCta:"پەیوەندی بۆ کار",
+        cvWorkBig:"ئێمە کار لەسەر وێبسایتەکە دەکەین و بە زووترین کات باشتر دەکەین.",
+        cvWorkSmall:"سوپاس بۆ ئارامگرتنتان.",
+        cvCompanyTitle:"کۆمپانیای پەرزەند",
+        cvCompanyDesc:"خزمەتگوزاری فرەبواری پێشکەش دەکەین: بازرگانی گشتی، ئای تی (پەرەپێدانی سۆفتوێر)، پاککردنەوە، خواردن، و پێداویستی پزیشکی.",
+        cvField1:"خزمەتگوزاری:",
+        cvField1v:"بازرگانی • ئای تی • پاککردنەوە • خواردن • پزیشکی",
+        cvField3:"شوێن:",
+        cvField3v:"هەولێر، هەرێمی کوردستان، عێراق",
+
+        contactTitle:"پەیوەندی",
+        contactDesc:"داواکاری بنێرە و وەڵامت دەدەین بە وردەکاری و نرخ.",
+        formNameLabel:"ناو",
+        formContactLabel:"ژمارەی مۆبایل یان ئیمەیڵ",
+        formContactPlaceholder:"ژمارەی مۆبایل یان ئیمەیڵ",
+        formMsgLabel:"نامە",
+        formSend:"ناردن",
+
+        footerTag:"خزمەتگوزاری فرەبواری بە ستانداردی بەرز.",
+        footerTextShort:"لە بازرگانی، ئای تی، پاککردنەوە، خواردن و پێداویستی پزیشکی کاردەکەین.",
+        footerQuick:"لینکی خێرا",
+        footerDivisions:"بەشەکان",
+        footerContact:"پەیوەندی",
+        footerEmail:"info@parzand.com",
+        footerAddr:"هەولێر، هەرێمی کوردستان، عێراق",
+        footerCopyright:"© 2026 کۆمپانیای پەرزەند | هەموو مافەکان پارێزراون"
+      },
+
+      "ku-ar": {
+        dir:"rtl", rtl:true,
+        brandTitle:"کۆمپانیا پەرزەند",
+        brandSubtitle:"بازرگانیا گشتی • ئای تی • پاقژکاری • خوارن • پێداویستی پزیشکی • موڵک",
+        navHome:"سەرەتا", navDivisions:"بەشەکان", navCV:"سیڤی", navAbout:"دەربارە", navContact:"پەیوەندی",
+
+        heroPill:"پەرەپێدانا گەشە",
+        heroTitle:"پەرەپێدانا گەشە و نوێکاری",
+        heroDesc:"کۆمپانیا پەرزەند کۆمپانیایەکا فرەبواریە و خزمەتگوزاری ل چەند بواری جیاواز پێشکەش دکات.",
+        heroCta:"بینینی بەشەکان",
+        heroCta2:"پەیوەندی بکە",
+        heroCardTitle:"چی دکەین",
+        heroCardDesc:"بازرگانی، پەرەپێدانا سۆفتوێر، پاقژکاری، خوارن، و پێداویستی پزیشکی.",
+
+        founderName:"SARDAR QURBANI BRAIM",
+        founderTitle:"خاوەن",
+
+        divisionsTitle:"بەشێن مە",
+        divisionsDesc:"بواری جیاواز ببینە کە کۆمپانیا پەرزەند تێدا سەرکەوتووە.",
+        divTrading:"بازرگانیا گشتی",
+        divTradingDesc:"دابینکرن و ناردنا بەرهەم بە چاودێری کوالێتی.",
+        divIT:"ئای تی (سۆفتوێر)",
+        divITDesc:"وێبسایت، ئەپ، سیستەم و پشتگیری.",
+        divCleaning:"خزمەتگوزاری پاقژکاری",
+        divCleaningDesc:"پاقژکاری پڕۆفەشنال بۆ ماڵ و نووسینگە.",
+        divFood:"خزمەتگوزاری خوارن",
+        divFoodDesc:"بەرھەمی خوارن بە ستانداردی باش.",
+        divMedical:"پێداویستی پزیشکی",
+        divMedicalDesc:"دابینکرنا پێداویستی پزیشکی و کاڵای پزیشکی.",
+        divReal:"موڵک",
+        divRealDesc:"بەردست نینە",
+        divMore:"زیاتر ببینە →",
+
+        ctaStripTitle:"ئامادەی هاوبەشی پڕۆژەکەت بین؟",
+        ctaStripDesc:"نامە بۆمە فڕێکە و زوو وەڵامت دەدەین.",
+        ctaStripBtn:"پەیوەندی بکە",
+
+        cvTitle:"پێناسەی کۆمپانیا",
+        cvLead:"زانیاری خاوەن و بەڕێوەبەر.",
+        cvFounderLine:"دامەزرێنەری کۆمپانیا پەرزەند",
+        cvFounderName:"SARDAR QURBANI BRAIM",
+        cvCeoLine:"CEO",
+        cvCeoName:"Yasa Sardar Qurbani",
+        cvDownload:"داگرتنا سیڤی",
+        cvCta:"پەیوەندی بۆ کار",
+        cvWorkBig:"ئێمە کار ل سەر وێبسایتەکە دکەین و بە زووترین کات باشتر دکەین.",
+        cvWorkSmall:"سوپاس بۆ ئارامگرتنت.",
+        cvCompanyTitle:"کۆمپانیا پەرزەند",
+        cvCompanyDesc:"خزمەتگوزاری فرەبواری پێشکەش دکەین: بازرگانی گشتی، ئای تی (پەرەپێدانا سۆفتوێر)، پاقژکاری، خوارن، و پێداویستی پزیشکی.",
+        cvField1:"خزمەتگوزاری:",
+        cvField1v:"بازرگانی • ئای تی • پاقژکاری • خوارن • پزیشکی",
+        cvField3:"شوێن:",
+        cvField3v:"هەولێر، هەرێمی کوردستان، عێراق",
+
+        contactTitle:"پەیوەندی",
+        contactDesc:"نامە بنێرە و وەڵامت دەدەین.",
+        formNameLabel:"ناڤ",
+        formContactLabel:"ژمارەی مۆبایل یان ئیمەیڵ",
+        formContactPlaceholder:"ژمارەی مۆبایل یان ئیمەیڵ",
+        formMsgLabel:"نامە",
+        formSend:"ناردن",
+
+        footerTag:"خزمەتگوزاری فرەبواری بە ستانداردی بەرز.",
+        footerTextShort:"لە بازرگانی، ئای تی، پاقژکاری، خوارن و پێداویستی پزیشکی کاردەکەین.",
+        footerQuick:"لینکی خێرا",
+        footerDivisions:"بەشەکان",
+        footerContact:"پەیوەندی",
+        footerEmail:"info@parzand.com",
+        footerAddr:"هەولێر، هەرێمی کوردستان، عێراق",
+        footerCopyright:"© 2026 کۆمپانیا پەرزەند | هەموو مافەکان پارێزراون"
+      }
+    };
+
+    function applyLang(lang){
+      const t = translations[lang] || translations.en;
+      document.documentElement.lang = (lang === "ku-ar") ? "ku" : lang;
+      document.documentElement.dir = t.dir || "ltr";
+      document.body.classList.toggle("rtl", !!t.rtl);
+
+      document.querySelectorAll("[data-i18n]").forEach(el=>{
+        const key = el.getAttribute("data-i18n");
+        const value = (t[key] ?? translations.en[key]);
+        if (value) el.textContent = value;
+      });
+
+      document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>{
+        const key = el.getAttribute("data-i18n-placeholder");
+        const value = (t[key] ?? translations.en[key]);
+        if (value) el.setAttribute("placeholder", value);
+      });
+
+      localStorage.setItem("parzand_lang", lang);
+    }
+
+    const sel = document.getElementById("langSelect");
+    const saved = localStorage.getItem("parzand_lang") || "en";
+    sel.value = saved;
+    applyLang(saved);
+    sel.addEventListener("change", e => applyLang(e.target.value));
+
+    // ✅ DM -> WhatsApp Direct (Number: +9647704601060)
+    const form = document.getElementById("contactForm");
+    const statusEl = document.getElementById("formStatus");
+    const WA_NUMBER = "9647704601060"; // no +
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const name = form.elements.name.value.trim();
+      const contact = form.elements.contact.value.trim();
+      const message = form.elements.message.value.trim();
+      const lang = sel.value || "en";
+
+      if (!name || !contact || !message) {
+        statusEl.textContent = "❌ Please fill all fields.";
+        return;
+      }
+
+      const text =
+`Hello Parzand Company,
+Name: ${name}
+Contact: ${contact}
+Language: ${lang}
+
+Message:
+${message}`;
+
+      const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
+
+      statusEl.textContent = "Opening WhatsApp...";
+      window.open(url, "_blank", "noopener");
+    });
+  </script>
+</body>
+</html>
