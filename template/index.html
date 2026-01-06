@@ -103,17 +103,15 @@
       top:0;
       z-index: 1000;
     }
-    .nav-inner{padding:12px 0;}
 
+    /* ✅ Smaller NAV */
+    .nav-inner{padding:8px 0; position:relative;} /* was 12px */
     .brand{
       display:flex; align-items:center; gap:10px;
-      min-width: 190px;
+      min-width: 150px;
     }
-
-    /* Logo container (put logo.png in same folder) */
     .logo{
-      width:64px; height:64px; border-radius:10px;
-
+      width:44px; height:44px; border-radius:10px;  /* was 64 */
       display:flex;
       align-items:center;
       justify-content:center;
@@ -126,17 +124,17 @@
       object-fit: cover;
       display:block;
     }
-
-    .brand b{font-size:14px}
-    .brand small{display:block; margin-top:1px; color:var(--muted); font-size:12px}
+    .brand b{font-size:13px; line-height:1.1;} /* smaller */
+    .brand small{display:block; margin-top:1px; color:var(--muted); font-size:11px} /* smaller */
 
     .links{
       display:flex; gap:10px; flex-wrap:wrap;
       justify-content:center;
+      transition: opacity .18s ease, transform .18s ease; /* ✅ smooth hide */
     }
     .links a{
-      font-size:13px;
-      padding:10px 12px;
+      font-size:12px;                 /* smaller */
+      padding:8px 10px;               /* smaller */
       border-radius:999px;
       color:var(--muted);
       border:1px solid transparent;
@@ -153,7 +151,7 @@
     select{
       border:1px solid var(--border);
       background:#fff;
-      padding:10px 38px 10px 12px;
+      padding:8px 34px 8px 10px;  /* smaller */
       border-radius:12px;
       font-weight:600;
       font-size:12px;
@@ -170,33 +168,40 @@
       pointer-events:none;
     }
 
-    /* ===== NEW: Burger menu on scroll ===== */
-    .nav-inner{ position:relative; } /* needed for dropdown positioning */
-
+    /* ===== Burger menu on scroll (SMALLER + SMOOTHER) ===== */
     .burger{
       display:none;
       border:1px solid var(--border);
       background:#fff;
-      padding:10px 12px;
+      padding:8px 10px;        /* smaller */
       border-radius:12px;
       font-weight:900;
-      font-size:18px;
+      font-size:16px;          /* smaller */
       cursor:pointer;
       line-height:1;
+      opacity:0;               /* ✅ smooth appear */
+      transform: translateY(-4px);
+      transition: opacity .22s ease, transform .22s ease;
     }
 
     .burger-menu{
-      display:none;
+      display:block;           /* ✅ keep for animation */
       position:absolute;
-      top:74px;
+      top:62px;                /* tighter (was 74) */
       right:18px;
-      width:240px;
+      width:230px;
       background:#fff;
       border:1px solid var(--border);
       border-radius:14px;
       box-shadow: 0 16px 34px rgba(15,23,42,.12);
       overflow:hidden;
       z-index:2000;
+
+      /* ✅ smooth open */
+      opacity:0;
+      transform: translateY(-10px) scale(.98);
+      pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
     }
     .burger-menu a{
       display:block;
@@ -207,11 +212,23 @@
     }
     .burger-menu a:last-child{border-bottom:none;}
     .burger-menu a:hover{background:#f8fafc;}
-    .burger-menu.open{display:block;}
+    .burger-menu.open{
+      opacity:1;
+      transform: translateY(0) scale(1);
+      pointer-events:auto;
+    }
 
-    /* when scrolled: hide links, show burger */
-    .nav.scrolled .links{display:none;}
-    .nav.scrolled .burger{display:inline-flex;}
+    /* when scrolled: fade links out, fade burger in */
+    .nav.scrolled .links{
+      opacity:0;
+      transform: translateY(-4px);
+      pointer-events:none;
+    }
+    .nav.scrolled .burger{
+      display:inline-flex;
+      opacity:1;
+      transform: translateY(0);
+    }
 
     /* RTL dropdown position */
     body.rtl .burger-menu{ right:auto; left:18px; }
@@ -486,6 +503,12 @@
       .grid{grid-template-columns: 1fr;}
       .links{justify-content:flex-start}
       .footer-grid{grid-template-columns: 1fr;}
+
+      /* ✅ Reduce nav height more on mobile */
+      .brand small{display:none;}
+      .logo{width:40px;height:40px;}
+      select{padding:8px 30px 8px 10px; font-size:11px;}
+      .burger-menu{top:58px;} /* tighter on mobile */
     }
   </style>
 </head>
@@ -508,7 +531,7 @@
           </span>
           <span>
             <b data-i18n="brandTitle">Parzand Company</b>
-            <small data-i18n="brandSubtitle">General Trading • IT (Software) • Cleaning • Food • Medical Supplies • Real Estate</small>
+            <small data-i18n="brandSubtitle">General Trading • Medical Supplies • IT (Software) • Cleaning • Food •  Real Estate</small>
           </span>
         </a>
 
@@ -520,7 +543,7 @@
           <a href="#contact" data-i18n="navContact">Contact</a>
         </div>
 
-        <!-- NEW: Burger button (shows only when scrolling) -->
+        <!-- Burger button (shows only when scrolling) -->
         <button class="burger" id="burgerBtn" type="button" aria-label="Menu" aria-expanded="false">☰</button>
 
         <div class="lang-wrap">
@@ -533,7 +556,7 @@
         </div>
       </div>
 
-      <!-- NEW: Burger dropdown -->
+      <!-- Burger dropdown -->
       <div class="burger-menu" id="burgerMenu" aria-hidden="true">
         <a href="#top" data-i18n="navHome">Home</a>
         <a href="#divisions" data-i18n="navDivisions">Divisions</a>
@@ -552,7 +575,7 @@
           <div class="pill" style="border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.10); color: rgba(255,255,255,.90);" data-i18n="heroPill">
             Empowering growth
           </div>
-          <h1 data-i18n="heroTitle">Empowering Growth and Innovation</h1>
+          <h1 data-i18n="heroTitle">Groing More and Innovation</h1>
           <p data-i18n="heroDesc">
             Parzand Company is a diversified company offering services across multiple sectors with high standards and reliable delivery.
           </p>
@@ -591,6 +614,7 @@
             <a class="more" href="#contact" data-i18n="divMore">View More →</a>
           </div>
         </article>
+
         <article class="card">
           <div class="thumb" style="background-image:url('medical.png');"></div>
           <div class="body">
@@ -626,8 +650,6 @@
             <a class="more" href="#contact" data-i18n="divMore">View More →</a>
           </div>
         </article>
-
-
 
         <article class="card">
           <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1200&auto=format&fit=crop');"></div>
@@ -950,7 +972,7 @@
         divMedicalDesc:"دابینکردنی پێداویستی پزیشکی و کاڵای پزیشکی.",
         divReal:"خزمەتگوزاری خانووبەرە",
         divRealDesc:"بەردەست نییە",
-        divMore:"لەم کاتەدا بەردەست نییە →",
+        divMore:"زیاتر ببینە →",
 
         ctaStripTitle:"ئامادەیت هاوبەشی پڕۆژەکەت بین؟",
         ctaStripDesc:"داواکاری بنێرە و زوو وەڵامت دەدەین.",
@@ -1123,13 +1145,17 @@ ${message}`;
       window.open(url, "_blank", "noopener");
     });
 
-    /* ===== NEW: Scroll -> burger behavior + toggle menu ===== */
+    /* Scroll -> burger behavior + toggle menu (SMOOTHER) */
     const nav = document.querySelector(".nav");
     const burgerBtn = document.getElementById("burgerBtn");
     const burgerMenu = document.getElementById("burgerMenu");
 
+    let lastScrolledState = null;
     function setNavState(){
-      const scrolled = window.scrollY > 80; // change 80 if you want
+      const scrolled = window.scrollY > 80;
+      if (scrolled === lastScrolledState) return;
+      lastScrolledState = scrolled;
+
       nav.classList.toggle("scrolled", scrolled);
 
       if (!scrolled) {
@@ -1140,7 +1166,7 @@ ${message}`;
     }
 
     setNavState();
-    window.addEventListener("scroll", setNavState);
+    window.addEventListener("scroll", setNavState, { passive: true });
 
     burgerBtn.addEventListener("click", () => {
       const isOpen = burgerMenu.classList.toggle("open");
