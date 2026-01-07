@@ -23,6 +23,12 @@
       --shadow: 0 12px 30px rgba(15,23,42,.12);
       --radius: 18px;
       --max: 1120px;
+
+      /* animation helpers */
+      --ease: cubic-bezier(.2,.8,.2,1);
+      --ease2: cubic-bezier(.16,1,.3,1);
+      --dur: 240ms;
+      --dur2: 360ms;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -94,7 +100,7 @@
       opacity: .35;
     }
 
-    /* NAV */
+    /* ================= NAV (SMALL + ANIMATED) ================= */
     .nav{
       background: rgba(255,255,255,.92);
       backdrop-filter: blur(10px);
@@ -102,174 +108,179 @@
       position: sticky;
       top:0;
       z-index: 1000;
+      transform: translateZ(0);
+      transition: box-shadow var(--dur) var(--ease), background var(--dur) var(--ease);
     }
-    .nav-inner{padding:12px 0;}
+    .nav.scrolled{
+      box-shadow: 0 10px 24px rgba(15,23,42,.08);
+      background: rgba(255,255,255,.96);
+    }
+
+    .nav-inner{
+      padding:8px 0; /* small */
+      position:relative; /* for burger dropdown */
+      transition: padding var(--dur) var(--ease);
+    }
+    .nav.scrolled .nav-inner{ padding:6px 0; }
 
     .brand{
-      display:flex; align-items:center; gap:10px;
-      min-width: 0; /* ✅ allow shrink */
-      flex: 1 1 auto;
-    }
-
-    /* Logo container (put logo.png in same folder) */
-    .logo{
-      width:44px; height:44px; border-radius:10px; /* ✅ smaller */
       display:flex;
       align-items:center;
-      justify-content:center;
+      gap:10px;
+      min-width:0;
+    }
+    .logo{
+      width:36px;
+      height:36px;
+      border-radius:8px;
       overflow:hidden;
-      border: 1px solid rgba(255,255,255,.6);
-      flex: 0 0 auto;
+      border:1px solid var(--border);
+      flex:0 0 auto;
+      transition: transform var(--dur2) var(--ease2);
+      will-change: transform;
     }
+    .nav.scrolled .logo{ transform: scale(.96); }
     .logo img{
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      width:100%;
+      height:100%;
+      object-fit:cover;
       display:block;
     }
-
-    /* ✅ smaller brand texts + ellipsis */
-    .brand span{min-width:0;}
+    .brand span{
+      display:flex;
+      flex-direction:column;
+      line-height:1.1;
+      min-width:0;
+    }
     .brand b{
-      font-size:13px;
-      display:block;
+      font-size:14px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width: 62vw;
     }
     .brand small{
-      display:block;
-      margin-top:2px;
-      color:var(--muted);
       font-size:11px;
+      color:var(--muted);
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width: 62vw;
+      max-width: 56ch;
+      transition: opacity var(--dur) var(--ease);
     }
-
-    /* ✅ subtitle becomes even smaller on smaller screens and hides on very small */
-    @media (max-width: 720px){
-      .brand small{font-size:10px;}
-    }
-    @media (max-width: 460px){
+    @media (max-width:720px){
       .brand small{display:none;}
     }
 
     .links{
-      display:flex; gap:10px; flex-wrap:wrap;
-      justify-content:center;
+      display:flex;
+      gap:14px;
+      align-items:center;
     }
     .links a{
       font-size:13px;
-      padding:10px 12px;
-      border-radius:999px;
       color:var(--muted);
-      border:1px solid transparent;
-      transition:.2s ease;
       white-space:nowrap;
+      transition: color var(--dur) var(--ease), transform var(--dur) var(--ease);
     }
-    .links a:hover{
-      color:var(--text);
-      background:#fff;
-      border-color:var(--border);
-    }
+    .links a:hover{ color:var(--text); transform: translateY(-1px); }
 
-    .lang-wrap{position:relative}
-    select{
-      border:1px solid var(--border);
-      background:#fff;
-      padding:10px 34px 10px 12px;
-      border-radius:12px;
-      font-weight:700;
-      font-size:12px;
-      color:var(--text);
-      outline:none;
-      cursor:pointer;
-      height: 40px;
-    }
-    .lang-wrap:after{
-      content:"▾";
-      position:absolute;
-      right:12px; top:50%;
-      transform:translateY(-50%);
-      color:var(--muted);
-      pointer-events:none;
-    }
-
-    /* ===== Burger menu on scroll (updated) ===== */
-    .nav-inner{ position:relative; } /* needed for dropdown positioning */
-
-    /* ✅ actions wrapper so language stays NEXT to burger always */
     .nav-actions{
       display:flex;
       align-items:center;
       gap:10px;
-      flex: 0 0 auto;
+      flex:0 0 auto;
     }
 
-    /* ✅ smaller burger + smoother animation + "X" */
-    .burger{
-      display:none; /* only show on scroll (kept your logic) */
-      width:40px;
-      height:40px;
+    /* language always visible */
+    .lang-wrap{position:relative}
+    select{
+      height:36px;
       border:1px solid var(--border);
       background:#fff;
-      border-radius:12px;
+      padding:0 34px 0 10px;
+      border-radius:10px;
+      font-weight:600;
+      font-size:12px;
+      color:var(--text);
+      outline:none;
       cursor:pointer;
+      transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+    }
+    select:focus{
+      box-shadow: 0 0 0 4px rgba(79,70,229,.14);
+    }
+    .lang-wrap:after{
+      content:"▾";
+      position:absolute;
+      right:12px;
+      top:50%;
+      transform:translateY(-50%);
+      color:var(--muted);
+      pointer-events:none;
+    }
+    body.rtl .lang-wrap:after{right:auto; left:12px;}
+
+    /* burger button (animated to X) */
+    .burger{
+      width:36px;
+      height:36px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:#fff;
+      display:none;
       align-items:center;
       justify-content:center;
-      padding:0;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .12s ease;
-    }
-    .burger:active{transform:scale(.98);}
-
-    .burger .line{
-      width:18px;
-      height:2px;
-      background: var(--text);
-      border-radius:999px;
+      cursor:pointer;
+      transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
       position:relative;
-      transition: background .18s ease;
     }
-    .burger .line::before,
-    .burger .line::after{
-      content:"";
+    .burger:hover{ transform: translateY(-1px); }
+    .burger:active{ transform: translateY(0px) scale(.98); }
+    .burger:focus{ outline:none; box-shadow: 0 0 0 4px rgba(79,70,229,.14); }
+
+    .burger .lines{
+      width:18px;
+      height:12px;
+      position:relative;
+      display:block;
+    }
+    .burger .lines i{
       position:absolute;
       left:0;
-      width:18px;
+      right:0;
       height:2px;
-      background: var(--text);
       border-radius:999px;
-      transition: transform .18s ease, top .18s ease;
+      background: var(--text);
+      transition: transform var(--dur2) var(--ease2), top var(--dur2) var(--ease2), opacity var(--dur) var(--ease);
     }
-    .burger .line::before{ top:-6px; }
-    .burger .line::after{ top:6px; }
+    .burger .lines i:nth-child(1){ top:0; }
+    .burger .lines i:nth-child(2){ top:5px; }
+    .burger .lines i:nth-child(3){ top:10px; }
 
-    .burger.open .line{background:transparent;}
-    .burger.open .line::before{ top:0; transform: rotate(45deg); }
-    .burger.open .line::after{ top:0; transform: rotate(-45deg); }
+    /* burger open -> X */
+    .burger.open .lines i:nth-child(1){ top:5px; transform: rotate(45deg); }
+    .burger.open .lines i:nth-child(2){ opacity:0; }
+    .burger.open .lines i:nth-child(3){ top:5px; transform: rotate(-45deg); }
 
+    /* dropdown menu (smooth) */
     .burger-menu{
-      display:block; /* ✅ allow animation; visibility controlled by opacity/pointer-events */
       position:absolute;
-      top:74px;
+      top:52px;
       right:18px;
-      width:240px;
+      width:220px;
       background:#fff;
       border:1px solid var(--border);
-      border-radius:14px;
-      box-shadow: 0 16px 34px rgba(15,23,42,.12);
+      border-radius:12px;
+      box-shadow:0 16px 32px rgba(0,0,0,.12);
       overflow:hidden;
-      z-index:2000;
 
-      /* ✅ smooth open/close */
+      /* animation */
       opacity:0;
-      transform: translateY(-10px) scale(.98);
+      transform: translateY(-8px) scale(.98);
       pointer-events:none;
-      transition: opacity .20s ease, transform .20s ease;
+      transform-origin: top right;
+      transition: opacity var(--dur2) var(--ease2), transform var(--dur2) var(--ease2);
+      will-change: opacity, transform;
     }
     .burger-menu a{
       display:block;
@@ -277,25 +288,37 @@
       font-size:13px;
       color:var(--text);
       border-bottom:1px solid var(--border);
+      transition: background var(--dur) var(--ease), transform var(--dur) var(--ease);
     }
     .burger-menu a:last-child{border-bottom:none;}
-    .burger-menu a:hover{background:#f8fafc;}
+    .burger-menu a:hover{ background:#f8fafc; transform: translateX(2px); }
+
     .burger-menu.open{
       opacity:1;
       transform: translateY(0) scale(1);
       pointer-events:auto;
     }
 
-    /* when scrolled: hide links, show burger */
-    .nav.scrolled .links{display:none;}
-    .nav.scrolled .burger{display:inline-flex;}
+    /* scroll behavior: burger appears when scrolled */
+    .nav.scrolled .links{ display:none; }
+    .nav.scrolled .burger{ display:flex; }
 
-    /* ✅ keep language ALWAYS next to burger (even on scroll) */
-    /* lang select is never hidden */
+    /* mobile: always burger */
+    @media (max-width:900px){
+      .links{ display:none; }
+      .burger{ display:flex; }
+    }
 
     /* RTL dropdown position */
-    body.rtl .burger-menu{ right:auto; left:18px; }
-    body.rtl .lang-wrap:after{right:auto; left:12px;}
+    body.rtl .burger-menu{
+      right:auto; left:18px;
+      transform-origin: top left;
+    }
+
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ transition:none !important; scroll-behavior:auto !important; }
+    }
 
     /* HERO */
     .hero{
@@ -544,7 +567,6 @@
 
     /* RTL */
     body.rtl .row{flex-direction: row-reverse;}
-    body.rtl .links{justify-content:center}
     body.rtl .hero-inner{direction: rtl;}
     body.rtl .cta-strip{flex-direction: row-reverse;}
     body.rtl .tag{flex-direction: row-reverse;}
@@ -552,7 +574,6 @@
     body.rtl .foot-brand{flex-direction: row-reverse;}
     body.rtl .cv-wrap{direction: rtl;}
     body.rtl .cv-actions{justify-content:flex-start;}
-    body.rtl .lang-wrap:after{right:auto; left:12px;}
 
     /* Responsive */
     @media (max-width: 1020px){
@@ -565,10 +586,7 @@
     }
     @media (max-width: 560px){
       .grid{grid-template-columns: 1fr;}
-      .links{justify-content:flex-start}
       .footer-grid{grid-template-columns: 1fr;}
-      /* ✅ tighter spacing on very small screens */
-      .container{padding:0 14px;}
     }
   </style>
 </head>
@@ -603,7 +621,6 @@
           <a href="#contact" data-i18n="navContact">Contact</a>
         </div>
 
-        <!-- ✅ NEW wrapper: language ALWAYS next to burger -->
         <div class="nav-actions">
           <div class="lang-wrap">
             <select id="langSelect" aria-label="Language">
@@ -614,14 +631,14 @@
             </select>
           </div>
 
-          <!-- Burger shows only when scrolling (your behavior kept) -->
           <button class="burger" id="burgerBtn" type="button" aria-label="Menu" aria-expanded="false">
-            <span class="line" aria-hidden="true"></span>
+            <span class="lines" aria-hidden="true">
+              <i></i><i></i><i></i>
+            </span>
           </button>
         </div>
       </div>
 
-      <!-- Burger dropdown -->
       <div class="burger-menu" id="burgerMenu" aria-hidden="true">
         <a href="#top" data-i18n="navHome">Home</a>
         <a href="#divisions" data-i18n="navDivisions">Divisions</a>
@@ -679,6 +696,7 @@
             <a class="more" href="#contact" data-i18n="divMore">View More →</a>
           </div>
         </article>
+
         <article class="card">
           <div class="thumb" style="background-image:url('medical.png');"></div>
           <div class="body">
@@ -864,7 +882,7 @@
       en: {
         dir:"ltr", rtl:false,
         brandTitle:"Parzand Company",
-        brandSubtitle:"General Trading • Medical Supplies • IT (Software) • Cleaning • Food •  Real Estate",
+        brandSubtitle:"General Trading • Medical Supplies • IT (Software) • Cleaning • Food • Real Estate",
         navHome:"Home", navDivisions:"Divisions", navCV:"CV", navAbout:"About Us", navContact:"Contact",
 
         heroPill:"Empowering growth",
@@ -948,7 +966,7 @@
         heroCardDesc:"التجارة، تطوير البرمجيات، التنظيف، خدمات الأغذية، والمستلزمات الطبية.",
 
         founderName:"SARDAR QURBANI BRAIM",
-        founderTitle:"رأیس",
+        founderTitle:"مؤسس",
 
         divisionsTitle:"أقسامنا",
         divisionsDesc:"استكشف المجالات التي تتميز بها شركة برزند، مع خدمات وحلول عالية الجودة.",
@@ -974,7 +992,7 @@
         cvLead:"معلومات المؤسس والمدير التنفيذي.",
         cvFounderLine:"مؤسس شركة برزند",
         cvFounderName:"SARDAR QURBANI BRAIM",
-        cvCeoLine:"المدير المفوض (CEO)",
+        cvCeoLine:"المدير التنفيذي (CEO)",
         cvCeoName:"ياسا سردار قرباني",
         cvDownload:"تحميل السيرة",
         cvCta:"تواصل للأعمال",
@@ -1036,7 +1054,7 @@
         divMedicalDesc:"دابینکردنی پێداویستی پزیشکی و کاڵای پزیشکی.",
         divReal:"خزمەتگوزاری خانووبەرە",
         divRealDesc:"بەردەست نییە",
-        divMore:"لەم کاتەدا بەردەست نییە →",
+        divMore:"زیاتر ببینە →",
 
         ctaStripTitle:"ئامادەیت هاوبەشی پڕۆژەکەت بین؟",
         ctaStripDesc:"داواکاری بنێرە و زوو وەڵامت دەدەین.",
@@ -1072,6 +1090,7 @@
         footerQuick:"لینکی خێرا",
         footerDivisions:"بەشەکان",
         footerContact:"پەیوەندی",
+        footerEmail:"info@parzand.com",
         footerAddr:"هەولێر، هەرێمی کوردستان، عێراق",
         footerCopyright:"© 2026 کۆمپانیای پەرزەند | هەموو مافەکان پارێزراون"
       },
@@ -1209,7 +1228,7 @@ ${message}`;
       window.open(url, "_blank", "noopener");
     });
 
-    /* ===== Scroll -> burger behavior + toggle menu (UPDATED) ===== */
+    /* ===== Animated NAV: scroll behavior + burger ===== */
     const nav = document.querySelector(".nav");
     const burgerBtn = document.getElementById("burgerBtn");
     const burgerMenu = document.getElementById("burgerMenu");
@@ -1222,10 +1241,13 @@ ${message}`;
     }
 
     function setNavState(){
-      const scrolled = window.scrollY > 80;
+      const scrolled = window.scrollY > 60;
       nav.classList.toggle("scrolled", scrolled);
 
-      if (!scrolled) closeMenu();
+      // when back to top and on desktop, close menu
+      if (!scrolled && window.matchMedia("(min-width: 901px)").matches) {
+        closeMenu();
+      }
     }
 
     setNavState();
@@ -1233,18 +1255,37 @@ ${message}`;
 
     burgerBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      const isOpen = burgerMenu.classList.toggle("open");
-      burgerBtn.classList.toggle("open", isOpen);
-      burgerBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
-      burgerMenu.setAttribute("aria-hidden", isOpen ? "false" : "true");
+      const willOpen = !burgerMenu.classList.contains("open");
+      if (willOpen){
+        burgerMenu.classList.add("open");
+        burgerBtn.classList.add("open");
+        burgerBtn.setAttribute("aria-expanded", "true");
+        burgerMenu.setAttribute("aria-hidden", "false");
+      }else{
+        closeMenu();
+      }
     });
 
+    // close menu when clicking a link
     burgerMenu.querySelectorAll("a").forEach(a => {
       a.addEventListener("click", closeMenu);
     });
 
+    // close menu if click outside
     document.addEventListener("click", (e) => {
-      if (!burgerMenu.contains(e.target) && !burgerBtn.contains(e.target)) closeMenu();
+      const clickInside = burgerMenu.contains(e.target) || burgerBtn.contains(e.target);
+      if (!clickInside) closeMenu();
+    });
+
+    // close menu on ESC
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeMenu();
+    });
+
+    // if resize to desktop, close dropdown
+    window.addEventListener("resize", () => {
+      if (window.matchMedia("(min-width: 901px)").matches) closeMenu();
+      setNavState();
     });
   </script>
 </body>
