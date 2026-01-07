@@ -103,20 +103,23 @@
       top:0;
       z-index: 1000;
     }
+    .nav-inner{padding:12px 0;}
 
-    /* ✅ Smaller NAV */
-    .nav-inner{padding:8px 0; position:relative;} /* was 12px */
     .brand{
       display:flex; align-items:center; gap:10px;
-      min-width: 150px;
+      min-width: 0; /* ✅ allow shrink */
+      flex: 1 1 auto;
     }
+
+    /* Logo container (put logo.png in same folder) */
     .logo{
-      width:44px; height:44px; border-radius:10px;  /* was 64 */
+      width:44px; height:44px; border-radius:10px; /* ✅ smaller */
       display:flex;
       align-items:center;
       justify-content:center;
       overflow:hidden;
       border: 1px solid rgba(255,255,255,.6);
+      flex: 0 0 auto;
     }
     .logo img{
       width: 100%;
@@ -124,17 +127,43 @@
       object-fit: cover;
       display:block;
     }
-    .brand b{font-size:13px; line-height:1.1;} /* smaller */
-    .brand small{display:block; margin-top:1px; color:var(--muted); font-size:11px} /* smaller */
+
+    /* ✅ smaller brand texts + ellipsis */
+    .brand span{min-width:0;}
+    .brand b{
+      font-size:13px;
+      display:block;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 62vw;
+    }
+    .brand small{
+      display:block;
+      margin-top:2px;
+      color:var(--muted);
+      font-size:11px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 62vw;
+    }
+
+    /* ✅ subtitle becomes even smaller on smaller screens and hides on very small */
+    @media (max-width: 720px){
+      .brand small{font-size:10px;}
+    }
+    @media (max-width: 460px){
+      .brand small{display:none;}
+    }
 
     .links{
       display:flex; gap:10px; flex-wrap:wrap;
       justify-content:center;
-      transition: opacity .18s ease, transform .18s ease; /* ✅ smooth hide */
     }
     .links a{
-      font-size:12px;                 /* smaller */
-      padding:8px 10px;               /* smaller */
+      font-size:13px;
+      padding:10px 12px;
       border-radius:999px;
       color:var(--muted);
       border:1px solid transparent;
@@ -151,13 +180,14 @@
     select{
       border:1px solid var(--border);
       background:#fff;
-      padding:8px 34px 8px 10px;  /* smaller */
+      padding:10px 34px 10px 12px;
       border-radius:12px;
-      font-weight:600;
+      font-weight:700;
       font-size:12px;
       color:var(--text);
       outline:none;
       cursor:pointer;
+      height: 40px;
     }
     .lang-wrap:after{
       content:"▾";
@@ -168,28 +198,66 @@
       pointer-events:none;
     }
 
-    /* ===== Burger menu on scroll (SMALLER + SMOOTHER) ===== */
-    .burger{
-      display:none;
-      border:1px solid var(--border);
-      background:#fff;
-      padding:8px 10px;        /* smaller */
-      border-radius:12px;
-      font-weight:900;
-      font-size:16px;          /* smaller */
-      cursor:pointer;
-      line-height:1;
-      opacity:0;               /* ✅ smooth appear */
-      transform: translateY(-4px);
-      transition: opacity .22s ease, transform .22s ease;
+    /* ===== Burger menu on scroll (updated) ===== */
+    .nav-inner{ position:relative; } /* needed for dropdown positioning */
+
+    /* ✅ actions wrapper so language stays NEXT to burger always */
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex: 0 0 auto;
     }
 
-    .burger-menu{
-      display:block;           /* ✅ keep for animation */
+    /* ✅ smaller burger + smoother animation + "X" */
+    .burger{
+      display:none; /* only show on scroll (kept your logic) */
+      width:40px;
+      height:40px;
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:12px;
+      cursor:pointer;
+      align-items:center;
+      justify-content:center;
+      padding:0;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .12s ease;
+    }
+    .burger:active{transform:scale(.98);}
+
+    .burger .line{
+      width:18px;
+      height:2px;
+      background: var(--text);
+      border-radius:999px;
+      position:relative;
+      transition: background .18s ease;
+    }
+    .burger .line::before,
+    .burger .line::after{
+      content:"";
       position:absolute;
-      top:62px;                /* tighter (was 74) */
+      left:0;
+      width:18px;
+      height:2px;
+      background: var(--text);
+      border-radius:999px;
+      transition: transform .18s ease, top .18s ease;
+    }
+    .burger .line::before{ top:-6px; }
+    .burger .line::after{ top:6px; }
+
+    .burger.open .line{background:transparent;}
+    .burger.open .line::before{ top:0; transform: rotate(45deg); }
+    .burger.open .line::after{ top:0; transform: rotate(-45deg); }
+
+    .burger-menu{
+      display:block; /* ✅ allow animation; visibility controlled by opacity/pointer-events */
+      position:absolute;
+      top:74px;
       right:18px;
-      width:230px;
+      width:240px;
       background:#fff;
       border:1px solid var(--border);
       border-radius:14px;
@@ -197,11 +265,11 @@
       overflow:hidden;
       z-index:2000;
 
-      /* ✅ smooth open */
+      /* ✅ smooth open/close */
       opacity:0;
       transform: translateY(-10px) scale(.98);
       pointer-events:none;
-      transition: opacity .18s ease, transform .18s ease;
+      transition: opacity .20s ease, transform .20s ease;
     }
     .burger-menu a{
       display:block;
@@ -218,20 +286,16 @@
       pointer-events:auto;
     }
 
-    /* when scrolled: fade links out, fade burger in */
-    .nav.scrolled .links{
-      opacity:0;
-      transform: translateY(-4px);
-      pointer-events:none;
-    }
-    .nav.scrolled .burger{
-      display:inline-flex;
-      opacity:1;
-      transform: translateY(0);
-    }
+    /* when scrolled: hide links, show burger */
+    .nav.scrolled .links{display:none;}
+    .nav.scrolled .burger{display:inline-flex;}
+
+    /* ✅ keep language ALWAYS next to burger (even on scroll) */
+    /* lang select is never hidden */
 
     /* RTL dropdown position */
     body.rtl .burger-menu{ right:auto; left:18px; }
+    body.rtl .lang-wrap:after{right:auto; left:12px;}
 
     /* HERO */
     .hero{
@@ -503,12 +567,8 @@
       .grid{grid-template-columns: 1fr;}
       .links{justify-content:flex-start}
       .footer-grid{grid-template-columns: 1fr;}
-
-      /* ✅ Reduce nav height more on mobile */
-      .brand small{display:none;}
-      .logo{width:40px;height:40px;}
-      select{padding:8px 30px 8px 10px; font-size:11px;}
-      .burger-menu{top:58px;} /* tighter on mobile */
+      /* ✅ tighter spacing on very small screens */
+      .container{padding:0 14px;}
     }
   </style>
 </head>
@@ -531,7 +591,7 @@
           </span>
           <span>
             <b data-i18n="brandTitle">Parzand Company</b>
-            <small data-i18n="brandSubtitle">General Trading • Medical Supplies • IT (Software) • Cleaning • Food •  Real Estate</small>
+            <small data-i18n="brandSubtitle">General Trading • IT (Software) • Cleaning • Food • Medical Supplies • Real Estate</small>
           </span>
         </a>
 
@@ -543,16 +603,21 @@
           <a href="#contact" data-i18n="navContact">Contact</a>
         </div>
 
-        <!-- Burger button (shows only when scrolling) -->
-        <button class="burger" id="burgerBtn" type="button" aria-label="Menu" aria-expanded="false">☰</button>
+        <!-- ✅ NEW wrapper: language ALWAYS next to burger -->
+        <div class="nav-actions">
+          <div class="lang-wrap">
+            <select id="langSelect" aria-label="Language">
+              <option value="en">English</option>
+              <option value="ar">عربی</option>
+              <option value="ckb">کوردی سۆرانی</option>
+              <option value="ku-ar">کوردی بادینی</option>
+            </select>
+          </div>
 
-        <div class="lang-wrap">
-          <select id="langSelect" aria-label="Language">
-            <option value="en">English</option>
-            <option value="ar">عربی</option>
-            <option value="ckb">کوردی سۆرانی</option>
-            <option value="ku-ar">کوردی بادینی</option>
-          </select>
+          <!-- Burger shows only when scrolling (your behavior kept) -->
+          <button class="burger" id="burgerBtn" type="button" aria-label="Menu" aria-expanded="false">
+            <span class="line" aria-hidden="true"></span>
+          </button>
         </div>
       </div>
 
@@ -575,7 +640,7 @@
           <div class="pill" style="border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.10); color: rgba(255,255,255,.90);" data-i18n="heroPill">
             Empowering growth
           </div>
-          <h1 data-i18n="heroTitle">Groing More and Innovation</h1>
+          <h1 data-i18n="heroTitle">Empowering Growth and Innovation</h1>
           <p data-i18n="heroDesc">
             Parzand Company is a diversified company offering services across multiple sectors with high standards and reliable delivery.
           </p>
@@ -614,7 +679,6 @@
             <a class="more" href="#contact" data-i18n="divMore">View More →</a>
           </div>
         </article>
-
         <article class="card">
           <div class="thumb" style="background-image:url('medical.png');"></div>
           <div class="body">
@@ -972,7 +1036,7 @@
         divMedicalDesc:"دابینکردنی پێداویستی پزیشکی و کاڵای پزیشکی.",
         divReal:"خزمەتگوزاری خانووبەرە",
         divRealDesc:"بەردەست نییە",
-        divMore:"زیاتر ببینە →",
+        divMore:"لەم کاتەدا بەردەست نییە →",
 
         ctaStripTitle:"ئامادەیت هاوبەشی پڕۆژەکەت بین؟",
         ctaStripDesc:"داواکاری بنێرە و زوو وەڵامت دەدەین.",
@@ -1145,51 +1209,42 @@ ${message}`;
       window.open(url, "_blank", "noopener");
     });
 
-    /* Scroll -> burger behavior + toggle menu (SMOOTHER) */
+    /* ===== Scroll -> burger behavior + toggle menu (UPDATED) ===== */
     const nav = document.querySelector(".nav");
     const burgerBtn = document.getElementById("burgerBtn");
     const burgerMenu = document.getElementById("burgerMenu");
 
-    let lastScrolledState = null;
+    function closeMenu(){
+      burgerMenu.classList.remove("open");
+      burgerBtn.classList.remove("open");
+      burgerBtn.setAttribute("aria-expanded", "false");
+      burgerMenu.setAttribute("aria-hidden", "true");
+    }
+
     function setNavState(){
       const scrolled = window.scrollY > 80;
-      if (scrolled === lastScrolledState) return;
-      lastScrolledState = scrolled;
-
       nav.classList.toggle("scrolled", scrolled);
 
-      if (!scrolled) {
-        burgerMenu.classList.remove("open");
-        burgerBtn.setAttribute("aria-expanded", "false");
-        burgerMenu.setAttribute("aria-hidden", "true");
-      }
+      if (!scrolled) closeMenu();
     }
 
     setNavState();
-    window.addEventListener("scroll", setNavState, { passive: true });
+    window.addEventListener("scroll", setNavState, { passive:true });
 
-    burgerBtn.addEventListener("click", () => {
+    burgerBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
       const isOpen = burgerMenu.classList.toggle("open");
+      burgerBtn.classList.toggle("open", isOpen);
       burgerBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
       burgerMenu.setAttribute("aria-hidden", isOpen ? "false" : "true");
     });
 
-    // close menu when clicking a link
     burgerMenu.querySelectorAll("a").forEach(a => {
-      a.addEventListener("click", () => {
-        burgerMenu.classList.remove("open");
-        burgerBtn.setAttribute("aria-expanded", "false");
-        burgerMenu.setAttribute("aria-hidden", "true");
-      });
+      a.addEventListener("click", closeMenu);
     });
 
-    // close menu if click outside
     document.addEventListener("click", (e) => {
-      if (!burgerMenu.contains(e.target) && !burgerBtn.contains(e.target)) {
-        burgerMenu.classList.remove("open");
-        burgerBtn.setAttribute("aria-expanded", "false");
-        burgerMenu.setAttribute("aria-hidden", "true");
-      }
+      if (!burgerMenu.contains(e.target) && !burgerBtn.contains(e.target)) closeMenu();
     });
   </script>
 </body>
